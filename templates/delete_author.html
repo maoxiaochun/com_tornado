@@ -1,0 +1,19 @@
+d{% extends "base.html" %}
+
+{% block body %}
+
+    {% if errors %}
+        <li>
+            {% for error in errors %}
+             <p style="color: red;">
+                {{error}}.
+             </p>
+              {% end %}
+        </li>
+    {% end %}
+<form action="/auth/delete" method="POST">
+  UserName: <input name="username" type="text" ><br>
+  {% module xsrf_form_html() %}
+  <input type="submit"value='Delete'>
+</form>
+{% end %}

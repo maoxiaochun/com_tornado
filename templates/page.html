@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+    {% if errors %}
+        <li>
+            {% for error in errors %}
+             <p style="color: red;">
+                {{error}}.
+             </p>
+              {% end %}
+        </li>
+    {% end %}
+
+<form action="/" method="post">
+  <input type="text" name="username">
+  {% module  xsrf_form_html() %}
+  <input type="submit" value="Search">
+<a href="/auth/create"><input type="button" value="Create"></input></a>
+<a href="/auth/delete"><input type="button" value="Delete"></input></a>
+</form>
+<div>
+    <div>
+	    <caption>All Users</caption>
+		<table border =0 width="400">
+			<tr>
+			  <th align="left">UserName</th>
+			  <th align="left">PassWord</th>
+			</tr>
+			{% for i,j in lst %}
+			<tr>
+				<td align="left">{{i}}</td>
+				<td align="left">{{j}}</td> 
+			</tr>
+			{%end%}
+		</table>
+	</div>
+<div>
+{% end %}
+{% block bottom %}
+	{% for t in lst2 %}
+	<a href = '/page/{{t}}'>{{t}}</a>
+	{% end%}
+{% end %}
