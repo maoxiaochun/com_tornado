@@ -17,19 +17,22 @@
 
   {% module xsrf_form_html() %}
   <input type="submit" value='Search'>
+  
 </form>
 <div>
     <p style = "color:green;" >Search results are:</p>
     <div>
 		<table border =0>
 			<tr>
-			  <th>username</th>
-			  <th>passwd</th>
+			  <th></th>
+			  <th align="left">UserName</th>
+			  <th align="left">PassWord</th>
 			</tr>
 			{% for i,j in lst_sear %}
 			<tr>
-				<td>{{i}}</td>
-				<td>{{j}}</td> 
+			    <td class="cx"><input totime="1446110761000" uw="1" type="checkbox" id='chkb{{i}}'></td>
+				<td align="left">{{i}}</td>
+				<td align="left">{{j}}</td> 
 			</tr>
 			{%end%}
 		</table>

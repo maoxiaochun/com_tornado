@@ -1,5 +1,25 @@
 {% extends "base.html" %}
 
+{% block head %}
+<script>function delete_users(){
+			var sdata = document.getElementsByTagName("input");
+			for(var j=0;j<sdata.length;j++){				
+				if(sdata[j].type == "checkbox"  ){
+					alert(sdata[j].type)
+					if(sdata[j].checked){
+						document.getElementById('hidden').value = sdata[j].name
+					}
+				}
+			}
+		return 0
+		}
+</script>
+
+
+
+{% end %}
+
+
 {% block body %}
 
     {% if errors %}
@@ -13,22 +33,36 @@
     {% end %}
 
 <form action="/" method="post">
+  
+  {% module  xsrf_form_html() %}
+  	<input type="text" name="username">
+  <input type="submit" value="Search" ></input>
+
+  
+</form>
+
+<form action="/" method="post">
   <input type="text" name="username">
   {% module  xsrf_form_html() %}
-  <input type="submit" value="Search">
-<a href="/auth/create"><input type="button" value="Create"></input></a>
-<a href="/auth/delete"><input type="button" value="Delete"></input></a>
+
+    <input type="hidden" name="delete_user"   id ="hidden"></input>
+    <input type="submit" onclick="delete_users()"  value="Delete"></input> 
+    <input type="submit" onclick='create_users()'   value="Create"></input>
+  
 </form>
+
+
 <div>
     <div>
-	    <caption>All Users</caption>
-		<table border =0 width="400">
+		<table border =0 width="400" cellspacing="0">
 			<tr>
+			  <th></th>
 			  <th align="left">UserName</th>
 			  <th align="left">PassWord</th>
 			</tr>
 			{% for i,j in lst %}
-			<tr>
+			<tr class="cx" id ="{{i}}">
+			    <td><input type="checkbox" name="{{i}}"></input></td>
 				<td align="left">{{i}}</td>
 				<td align="left">{{j}}</td> 
 			</tr>
@@ -36,6 +70,7 @@
 		</table>
 	</div>
 <div>
+
 {% end %}
 {% block bottom %}
 	{% for t in lst2 %}

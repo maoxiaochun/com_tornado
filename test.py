@@ -43,20 +43,30 @@ class MainHandler(tornado.web.RequestHandler):
         cursor = conn.execute("SELECT  name, passwd from authors  order by name")
         lstall = cursor.fetchall()
         lst2 = range(1,int(math.ceil(len(lstall)/20))+2)
-        for i in range(20):
-            if i<len(lstall):
-                lst.append(lstall[i]) 
-        if not self.get_argument("username") in (i for i,j in lstall):
-            if self.get_argument("username").strip() !=  '':
-                errors.append('Account have not created')
-            else:
-                errors.append('Please enter the UserName you want to search')
-        else:
-            sear=conn.execute("SELECT  name, passwd from authors  where name =?",(self.get_argument("username"),))
-            lst_sear = sear.fetchall()
+        print(self.get_argument("delete_user"))
+        if self.get_argument("delete_user"):
+            conn.execute(
+                "DELETE FROM authors Where name "
+                " = ?;",
+                (self.get_argument("delete_user"),))
+            conn.commit()
+            errors.append('Success delete User:'+self.get_argument("delete_user"))
             conn.close()
-            self.render("search_author.html",lst_sear=lst_sear,errors=errors)
-        conn.close()
+        else:
+            for i in range(20):
+                if i<len(lstall):
+                    lst.append(lstall[i]) 
+            if not self.get_argument("username") in (i for i,j in lstall):
+                if self.get_argument("username").strip() !=  '':
+                    errors.append('Account have not created')
+                else:
+                    errors.append('Please enter the UserName you want to search')
+            else:
+                sear=conn.execute("SELECT  name, passwd from authors  where name =?",(self.get_argument("username"),))
+                lst_sear = sear.fetchall()
+                conn.close()
+                self.render("search_author.html",lst_sear=lst_sear,errors=errors)
+            conn.close()
         self.render("page.html",lst=lst,lst2=lst2,errors=errors)
 
 class LookHandler(tornado.web.RequestHandler):
