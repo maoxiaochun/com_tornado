@@ -17,7 +17,7 @@ User Control
 				if(sdata[j].type == "checkbox"  ){					
 					if(sdata[j].checked){
 						if (confirm("你确定要删除用户："+sdata[j].name+'?')){
-							document.getElementById('hidden').value = sdata[j].name}
+							document.getElementById('hidden').value = document.getElementById('hidden').value+sdata[j].name+','}
 						else{document.getElementById('hidden').value = 'quit'}
 					}
 				}
@@ -62,10 +62,10 @@ User Control
   <input type="submit" onclick="create_users()" value='Create'>  
 </form>	
 	
-<form action="/" method="post">
+<span><form action="/" method="post">
   {% module  xsrf_form_html() %}
   <input type="hidden" name="no_user" ></input>
-  <input type="hidden" name="delete_user"   id ="hidden"></input>
+  <input type="hidden" name="delete_user"   id ="hidden" value =''></input>
   <input type="submit" onclick="delete_users()"  value="Delete"></input>  
 </form>
 
@@ -81,14 +81,14 @@ User Control
 			{% for i,j in lst %}
 			<tr class="cx" id ="{{i}}">
 			    <td><input type="checkbox" name="{{i}}"></input></td>
-				<td align="left">{{i}}</td>
+				<td align="left" >{{i}}</td>
 			</tr>
 			{%end%}
 			{%end%}
 		</table>
 	</div>
 <div>
-
+</span>
 {% end %}
 {% block bottom %}
 	{% for t in lst2 %}
