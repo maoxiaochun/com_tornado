@@ -1,18 +1,39 @@
 {% extends "base.html" %}
 
+
+{% block url %}
+"/"
+{% end %}
+{% block content %}
+User Control
+{% end %}
+
+
+
 {% block head %}
 <script>function delete_users(){
 			var sdata = document.getElementsByTagName("input");
 			for(var j=0;j<sdata.length;j++){				
-				if(sdata[j].type == "checkbox"  ){
-					alert(sdata[j].type)
+				if(sdata[j].type == "checkbox"  ){					
 					if(sdata[j].checked){
-						document.getElementById('hidden').value = sdata[j].name
+						if (confirm("你确定要删除用户："+sdata[j].name+'?')){
+							document.getElementById('hidden').value = sdata[j].name}
+						else{document.getElementById('hidden').value = 'quit'}
 					}
 				}
 			}
 		return 0
 		}
+        function search_users(){
+			document.getElementById('hidden2').value = 'search'
+			return 0
+		}
+        function create_users(){
+			document.getElementById('hidden2').value = 'create'
+			return 0
+		}
+		
+		
 </script>
 
 
@@ -33,22 +54,19 @@
     {% end %}
 
 <form action="/" method="post">
-  
   {% module  xsrf_form_html() %}
-  	<input type="text" name="username">
-  <input type="submit" value="Search" ></input>
-
-  
-</form>
-
+  <input type="text" name='username'>
+  <input type="hidden" name="delete_user"   ></input>
+  <input type="hidden" name="no_user"   id ="hidden2"></input>
+  <input type="submit" onclick="search_users()" value='Search'>
+  <input type="submit" onclick="create_users()" value='Create'>  
+</form>	
+	
 <form action="/" method="post">
-  <input type="text" name="username">
   {% module  xsrf_form_html() %}
-
-    <input type="hidden" name="delete_user"   id ="hidden"></input>
-    <input type="submit" onclick="delete_users()"  value="Delete"></input> 
-    <input type="submit" onclick='create_users()'   value="Create"></input>
-  
+  <input type="hidden" name="no_user" ></input>
+  <input type="hidden" name="delete_user"   id ="hidden"></input>
+  <input type="submit" onclick="delete_users()"  value="Delete"></input>  
 </form>
 
 
@@ -58,14 +76,14 @@
 			<tr>
 			  <th></th>
 			  <th align="left">UserName</th>
-			  <th align="left">PassWord</th>
 			</tr>
+			{%if lst != [] %}
 			{% for i,j in lst %}
 			<tr class="cx" id ="{{i}}">
 			    <td><input type="checkbox" name="{{i}}"></input></td>
 				<td align="left">{{i}}</td>
-				<td align="left">{{j}}</td> 
 			</tr>
+			{%end%}
 			{%end%}
 		</table>
 	</div>

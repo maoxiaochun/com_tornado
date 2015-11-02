@@ -1,5 +1,13 @@
 {% extends "base.html" %}
 
+{% block url %}
+"/auth/create"
+{% end %}
+
+{% block content %}
+Create
+{% end %}
+
 {% block body %}
 
     {% if errors %}
@@ -15,7 +23,7 @@
 <form action="/auth/create" method="POST">
   UserName: <input name="username" type="text"><br>
   Password: <input name="password" type="password"><br>
-  Password_again: <input name="password2" type="password"><br>
+  Password: <input name="password2" type="password"><br>
   {% module xsrf_form_html() %}
   <input type="submit" value ="Create">
 </form>
