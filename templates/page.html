@@ -9,16 +9,17 @@ User Control
 {% end %}
 
 
-
 {% block head %}
 <script>function delete_users(){
 			var sdata = document.getElementsByTagName("input");
-			for(var j=0;j<sdata.length;j++){				
+			for(var j=0;j<sdata.length;j++){	
 				if(sdata[j].type == "checkbox"  ){					
 					if(sdata[j].checked){
-						if (confirm("你确定要删除用户："+sdata[j].name+'?')){
-							document.getElementById('hidden').value = document.getElementById('hidden').value+sdata[j].name+','}
-						else{document.getElementById('hidden').value = 'quit'}
+					 if (confirm("你确定要删除用户：count=" + sdata[j].name + '?')){
+						 document.getElementById('hidden').value = document.getElementById('hidden').value+sdata[j].name+','
+						 document.getElementById('delete_form').submit();
+						 }
+						
 					}
 				}
 			}
@@ -32,14 +33,9 @@ User Control
 			document.getElementById('hidden2').value = 'create'
 			return 0
 		}
-		
-		
 </script>
 
-
-
 {% end %}
-
 
 {% block body %}
 
@@ -53,24 +49,21 @@ User Control
 		{% end %}
     {% end %}
 
-<form action="/" method="post">
+<form id="search_form" action="/" method="post">
   {% module  xsrf_form_html() %}
   <input type="text" name='username'>
-  <input type="hidden" name="delete_user"   ></input>
-  <input type="hidden" name="no_user"   id ="hidden2"></input>
+  <input type="hidden" name="action_type" id ="hidden2">
   <input type="submit" onclick="search_users()" value='Search'>
-  <input type="submit" onclick="create_users()" value='Create'>  
+  <input type="submit" onclick="create_users()" value='Create'>
 </form>	
 	
-<span><form action="/" method="post">
+<form id="delete_form" action="/" method="post">
   {% module  xsrf_form_html() %}
-  <input type="hidden" name="no_user" ></input>
-  <input type="hidden" name="delete_user"   id ="hidden" value =''></input>
-  <input type="submit" onclick="delete_users()"  value="Delete"></input>  
+  <input type="hidden" name="action_type"   id ="hidden" value =''>
+  <input type="button" onclick="delete_users()"  value="Delete">
 </form>
 
 
-<div>
     <div>
 		<table border =0 width="400" cellspacing="0">
 			<tr>
@@ -80,7 +73,7 @@ User Control
 			{%if lst != [] %}
 			{% for i,j in lst %}
 			<tr class="cx" id ="{{i}}">
-			    <td><input type="checkbox" name="{{i}}"></input></td>
+			    <td><input type="checkbox" name="{{i}}"></td>
 				<td align="left" >{{i}}</td>
 				<td align='left'><a href = "{{j}}">Key</a></td>
 			</tr>
@@ -88,8 +81,7 @@ User Control
 			{%end%}
 		</table>
 	</div>
-<div>
-</span>
+
 {% end %}
 {% block bottom %}
 	{% for t in lst2 %}
